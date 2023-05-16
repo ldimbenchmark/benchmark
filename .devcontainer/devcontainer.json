@@ -7,7 +7,8 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"hashicorp.terraform"
+				"hashicorp.terraform",
+				"ms-python.python"
 			]
 		}
 	}
