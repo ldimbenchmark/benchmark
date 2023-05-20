@@ -1,0 +1,57 @@
+
+name: 'Benchmark - 3'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    timeout-minutes:  480
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+
+    # Checks that all Terraform configuration files adhere to a canonical format
+    # - name: Terraform Format
+    #   run: terraform fmt -check
+
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      run: terraform plan -var vm_size="Standard_DS1_v2" -out tfplan
+
+    - name: Create directory
+      run: mkdir /tmp/benchmark-results/
+
+    - name: Terraform Apply
+      run: terraform apply tfplan
+      timeout-minutes: 30
+
+    - name: Execute benchmark
+      run: |
+        ssh -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host) sh <<'END_SCRIPT'
+        sudo python3 /home/azureuser/benchmark.py
+        END_SCRIPT
+        scp -r -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host):/home/azureuser/benchmark-results /tmp/benchmark-results/
+
+    - uses: actions/upload-artifact@master
+      if: always()
+      with:
+        name: benchmark-results
+        path: /tmp/benchmark-results/
+
+    - name: Terraform Destroy
+      if: always()
+      run: terraform destroy -auto-approve
