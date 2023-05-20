@@ -9,18 +9,12 @@ benchmark = LDIMBenchmark(
 )
 benchmark.add_local_methods(methods)
 
-results = benchmark.run_complexity_analysis(
+benchmark.run_complexity_analysis(
     methods=methods,
     style="time",
 )
 
-
-results
-
-
-# benchmark.run_complexity_analysis(
-#     methods=methods,
-#     style="junctions",
-# )
-
-# %%
+benchmark.run_complexity_analysis(
+    methods=methods,
+    style="junctions",
+)
