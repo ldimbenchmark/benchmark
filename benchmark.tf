@@ -13,8 +13,9 @@ terraform {
 
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
-  features {  }
-  tenant_id = "44678328-75c5-4e48-92c0-b2ab31d5166c"
+  features {}
+  subscription_id = "44678328-75c5-4e48-92c0-b2ab31d5166c"
+  # tenant_id = "44678328-75c5-4e48-92c0-b2ab31d5166c"
 }
 
 resource "random_id" "prefix" {
@@ -38,7 +39,7 @@ resource "azurerm_resource_group" "rg" {
 
 # Create virtual network
 resource "azurerm_virtual_network" "benchmark_network" {
-  name                = "myVnet"
+  name                = "${local.name_prefix}Vnet"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
@@ -46,7 +47,7 @@ resource "azurerm_virtual_network" "benchmark_network" {
 
 # Create subnet
 resource "azurerm_subnet" "benchmark_subnet" {
-  name                 = "mySubnet"
+  name                 = "${local.name_prefix}Subnet"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.benchmark_network.name
   address_prefixes     = ["10.0.1.0/24"]
@@ -54,7 +55,7 @@ resource "azurerm_subnet" "benchmark_subnet" {
 
 # Create public IPs
 resource "azurerm_public_ip" "benchmark_public_ip" {
-  name                = "myPublicIP"
+  name                = "${local.name_prefix}PublicIP"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   allocation_method   = "Dynamic"
@@ -62,7 +63,7 @@ resource "azurerm_public_ip" "benchmark_public_ip" {
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "benchmark_nsg" {
-  name                = "myNetworkSecurityGroup"
+  name                = "${local.name_prefix}NetworkSecurityGroup"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
@@ -81,7 +82,7 @@ resource "azurerm_network_security_group" "benchmark_nsg" {
 
 # Create network interface
 resource "azurerm_network_interface" "benchmark_nic" {
-  name                = "myNIC"
+  name                = "${local.name_prefix}NIC"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
@@ -102,8 +103,8 @@ resource "azurerm_network_interface_security_group_association" "example" {
 
 
 # Create storage account for boot diagnostics
-resource "azurerm_storage_account" "my_storage_account" {
-  name                     = "${local.name_prefix}"
+resource "azurerm_storage_account" "boot_diagnostics" {
+  name                     = "${local.name_prefix}sa"
   location                 = azurerm_resource_group.rg.location
   resource_group_name      = azurerm_resource_group.rg.name
   account_tier             = "Standard"
@@ -118,7 +119,7 @@ resource "tls_private_key" "example_ssh" {
 
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "benchmark_vm" {
-  name                  = "myVM"
+  name                  = "${local.name_prefix}VM"
   location              = azurerm_resource_group.rg.location
   resource_group_name   = azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.benchmark_nic.id]
@@ -147,7 +148,47 @@ resource "azurerm_linux_virtual_machine" "benchmark_vm" {
   }
 
   boot_diagnostics {
-    storage_account_uri = azurerm_storage_account.my_storage_account.primary_blob_endpoint
+    storage_account_uri = azurerm_storage_account.boot_diagnostics.primary_blob_endpoint
+  }
+}
+
+data "azurerm_storage_account" "data_cache" {
+  name                = var.storage_account_name
+  resource_group_name = "Master_Thesis"
+}
+
+data "azurerm_storage_account_sas" "example" {
+  connection_string = data.azurerm_storage_account.data_cache.primary_connection_string
+  https_only        = true
+
+  resource_types {
+    service   = true
+    container = true
+    object    = true
+  }
+
+  services {
+    blob  = true
+    queue = true
+    table = true
+    file  = true
+  }
+
+  start  = timeadd(timestamp(), "-1h")
+  expiry = timeadd(timestamp(), "12h")
+
+  permissions {
+    # https://github.com/hashicorp/terraform-provider-azurerm/issues/17558
+    read    = true
+    write   = true
+    delete  = true
+    list    = true
+    add     = true
+    create  = true
+    update  = true
+    process = true
+    tag     = false
+    filter  = false
   }
 }
 
@@ -160,7 +201,10 @@ resource "azurerm_virtual_machine_extension" "execute_benchmark" {
 
   settings = <<SETTINGS
     {
-        "script": "${base64encode(templatefile("prepare.sh", {}))}"
+        "script": "${base64encode(templatefile("prepare.sh", {
+  SAS_TOKEN        = data.azurerm_storage_account_sas.example.sas
+  BENCHMARK_SCRIPT = templatefile("benchmark.py", {})
+}))}"
     }
   SETTINGS
 }
@@ -182,4 +226,12 @@ output "public_ip_address" {
 output "tls_private_key" {
   value     = tls_private_key.example_ssh.private_key_pem
   sensitive = true
+}
+
+output "command" {
+  value = "ssh -i private.key -o StrictHostKeyChecking=no azureuser@${azurerm_linux_virtual_machine.benchmark_vm.public_ip_address}"
+}
+
+output "host" {
+  value = "azureuser@${azurerm_linux_virtual_machine.benchmark_vm.public_ip_address}"
 }
