@@ -30,7 +30,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -var vm_size="Standard_DS1_v2" -out tfplan
+      run: terraform plan -var vm_size="Standard_DS11-1_v2" -out tfplan
 
     - name: Create directory
       run: mkdir /tmp/benchmark-results/
