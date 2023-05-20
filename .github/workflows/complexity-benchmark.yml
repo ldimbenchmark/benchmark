@@ -1,5 +1,5 @@
 
-name: 'Benchmark - 3'
+name: 'Complexity Benchmark'
 
 on:
   workflow_dispatch:
@@ -15,11 +15,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-        
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform init

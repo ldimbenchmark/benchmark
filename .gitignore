@@ -4,3 +4,4 @@
 *.tfstate.lock.info
 private.key
 tfplan
+.env
