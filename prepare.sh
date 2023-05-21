@@ -1,6 +1,6 @@
 # Install Docker
-# curl -fsSL https://get.docker.com -o get-docker.sh
-# sudo sh get-docker.sh
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
 
 # Add Microsoft Repo
 curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo tee /etc/apt/trusted.gpg.d/microsoft.asc
