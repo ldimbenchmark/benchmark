@@ -5,3 +5,5 @@
 private.key
 tfplan
 .env
+.ldim_benchmark_cache
+benchmark-results
