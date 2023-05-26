@@ -2,9 +2,9 @@ from ldimbenchmark.methods import LILA, MNF, DUALMethod
 from ldimbenchmark import LDIMBenchmark
 
 methods = [
-    "ghcr.io/ldimbenchmark/dualmethod:0.2.7",
-    "ghcr.io/ldimbenchmark/lila:0.2.7",
-    "ghcr.io/ldimbenchmark/mnf:0.2.7",
+    "ghcr.io/ldimbenchmark/dualmethod:0.2.21",
+    "ghcr.io/ldimbenchmark/lila:0.2.21",
+    "ghcr.io/ldimbenchmark/mnf:0.2.21",
 ]
 
 benchmark = LDIMBenchmark(
