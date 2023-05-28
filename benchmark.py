@@ -16,12 +16,14 @@ benchmark.run_complexity_analysis(
     methods=methods,
     style="time",
     n_max=181,
-    n_measures=20,
+    n_measures=30,
+    n_repeats=5
 )
 
 benchmark.run_complexity_analysis(
     methods=methods,
     style="junctions",
     n_max=181,
-    n_measures=20,
+    n_measures=30,
+    n_repeats=5
 )
