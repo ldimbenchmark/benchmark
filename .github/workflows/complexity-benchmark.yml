@@ -8,7 +8,7 @@ jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
-    timeout-minutes:  480
+    timeout-minutes:  600
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
@@ -37,7 +37,7 @@ jobs:
 
     - name: Terraform Apply
       run: terraform apply tfplan
-      timeout-minutes: 30
+      timeout-minutes: 60
 
     - name: Execute benchmark
       run: |
@@ -46,7 +46,7 @@ jobs:
         sudo python3 /home/azureuser/benchmark.py
         END_SCRIPT
         scp -r -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host):/home/azureuser/benchmark-results /tmp/benchmark-results/
-      timeout-minutes: 240
+      timeout-minutes: 540
       
     - uses: actions/upload-artifact@master
       if: always()
