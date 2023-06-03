@@ -126,7 +126,8 @@ resource "azurerm_linux_virtual_machine" "benchmark_vm" {
   os_disk {
     name                 = "myOsDisk"
     caching              = "ReadWrite"
-    storage_account_type = "Premium_LRS"
+    storage_account_type = "Premium_LRS" # UltraSSD_LRS
+    disk_size_gb         = 128
   }
 
   source_image_reference {
