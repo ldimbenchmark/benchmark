@@ -45,8 +45,12 @@ jobs:
         sudo pip list
         sudo python3 /home/azureuser/benchmark.py
         END_SCRIPT
-        scp -r -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host):/home/azureuser/benchmark-results /tmp/benchmark-results/
       timeout-minutes: 540
+      
+    - name: Get data
+      if: always()
+      run: |
+        scp -r -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host):/home/azureuser/benchmark-results /tmp/benchmark-results/
       
     - uses: actions/upload-artifact@master
       if: always()
