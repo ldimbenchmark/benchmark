@@ -8,6 +8,8 @@ sudo apt-add-repository -y https://packages.microsoft.com/ubuntu/22.04/prod
 sudo apt-get update
 sudo apt-get install -y fuse3 blobfuse2
 
+# az storage blob directory download -c benchmark-cache --account-name masterthesisdata -s "datagen" -d "/home/azureuser/.ldim_benchmark_cache/datagen" --recursive --sas-token ${SAS_TOKEN}
+
 # Configure https://github.com/Azure/azure-storage-fuse
 cat > /home/azureuser/blobfuse.yaml <<EOF
 file_cache:
