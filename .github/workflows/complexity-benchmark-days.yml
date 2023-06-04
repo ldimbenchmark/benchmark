@@ -43,7 +43,7 @@ jobs:
       run: |
         ssh -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host) sh <<'END_SCRIPT'
         sudo pip list
-        sudo python3 /home/azureuser/benchmark-days.py
+        sudo python3 /home/azureuser/benchmark.py
         END_SCRIPT
       timeout-minutes: 540
       
