@@ -13,7 +13,7 @@ mkdir /home/azureuser/.ldim_benchmark_cache
 mkdir /home/azureuser/.ldim_benchmark_cache/datagen
 # az storage fs directory download -f benchmark-cache --account-name masterthesisdata -s "datagen" -d "/home/azureuser/.ldim_benchmark_cache" --recursive --sas-token "${SAS_TOKEN}"
 
-/tmp/azcopy copy "https://masterthesisdata.dfs.core.windows.net/benchmark-cache/datagen/synthetic-${DATA_FOLDER}${SAS_TOKEN}" /home/azureuser/.ldim_benchmark_cache --recursive
+/tmp/azcopy copy "https://masterthesisdata.dfs.core.windows.net/benchmark-cache/datagen/synthetic-${DATA_FOLDER}${SAS_TOKEN}" /home/azureuser/.ldim_benchmark_cache/datagen --recursive
 
 
 
