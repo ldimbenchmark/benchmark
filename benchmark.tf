@@ -202,7 +202,8 @@ resource "azurerm_virtual_machine_extension" "execute_benchmark" {
     {
         "script": "${base64encode(templatefile("prepare.sh", {
   SAS_TOKEN        = data.azurerm_storage_account_sas.example.sas
-  BENCHMARK_SCRIPT = templatefile("benchmark.py", {})
+  DATA_FOLDER      = var.benchmark_type
+  BENCHMARK_SCRIPT = templatefile("benchmark-${var.benchmark_type}.py", {})
 }))}"
     }
   SETTINGS

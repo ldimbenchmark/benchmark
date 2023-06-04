@@ -13,7 +13,17 @@ variable "storage_account_name" {
 variable "vm_size" {
   type = string
   # default     = "Standard_D2s_v3" # Double
-  default     = "Standard_DS1_v2" # Normal
+  default = "Standard_DS1_v2" # Normal
   # default     = "Standard_DS11-1_v2" # Much memory
   description = "The VM Size"
+}
+
+variable "benchmark_type" {
+  type        = string
+  validation {
+    condition     = contains(["days", "junctions"], var.benchmark_type)
+    error_message = "benchmark_type must be either 'days' or 'junctions'"
+  }
+  default     = "days"
+  description = "type of benchmark"
 }

@@ -19,11 +19,3 @@ benchmark.run_complexity_analysis(
     n_measures=60,
     n_repeats=3
 )
-
-benchmark.run_complexity_analysis(
-    methods=methods,
-    style="junctions",
-    n_max=366,
-    n_measures=60,
-    n_repeats=3
-)
