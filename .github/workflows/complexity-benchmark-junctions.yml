@@ -1,7 +1,6 @@
 
 name: 'Complexity Benchmark (Junctions)'
 
-scp -r -o PubkeyAuthentication=no -o PreferredAuthentications=password azureuser@52.188.172.188:/home/azureuser/benchmark-results ./benchmark-results/
 on:
   workflow_dispatch:
 
