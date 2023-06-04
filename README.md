@@ -5,7 +5,7 @@
 terraform init
 terraform apply
 
-ssh -i private.key  azureuser@52.191.50.53
+ssh -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host)
 
 terraform destroy
 ```
