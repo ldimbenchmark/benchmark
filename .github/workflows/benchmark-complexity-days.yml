@@ -1,0 +1,63 @@
+name: 'Complexity Benchmark (Days)'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    timeout-minutes: 600
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+      - name: Terraform Init
+        run: terraform init
+
+      # Checks that all Terraform configuration files adhere to a canonical format
+      # - name: Terraform Format
+      #   run: terraform fmt -check
+
+      # Generates an execution plan for Terraform
+      - name: Terraform Plan
+        run: terraform plan -var vm_size="Standard_DS11-1_v2" -var benchmark_type="complexity" -var benchmark_complexity_word="days" -out tfplan
+
+      - name: Create directory
+        run: mkdir /tmp/benchmark-results/
+
+      - name: Terraform Apply
+        run: terraform apply tfplan
+        timeout-minutes: 60
+
+      - name: Execute benchmark
+        run: |
+          scp -r -i private.key -o StrictHostKeyChecking=no /benchmark-complexity-days.py $(terraform output -raw host):/home/azureuser/benchmark.py
+          ssh -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host) sh <<'END_SCRIPT'
+          sudo pip list
+          sudo python3 /home/azureuser/benchmark.py
+          END_SCRIPT
+        timeout-minutes: 540
+
+      - name: Get data
+        if: always()
+        run: |
+          scp -r -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host):/home/azureuser/benchmark-results /tmp/benchmark-results/
+
+      - uses: actions/upload-artifact@master
+        if: always()
+        with:
+          name: benchmark-results
+          path: /tmp/benchmark-results/
+
+      - name: Terraform Destroy
+        if: always()
+        run: terraform destroy -auto-approve

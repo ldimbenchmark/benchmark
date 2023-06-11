@@ -14,6 +14,7 @@ terraform {
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
   features {}
+  subscription_id = "44678328-75c5-4e48-92c0-b2ab31d5166c"
 }
 
 resource "random_id" "prefix" {
@@ -27,6 +28,7 @@ resource "random_id" "prefix" {
 
 locals {
   name_prefix = "benchmark${random_id.prefix.hex}"
+  data_folder = var.benchmark_type == "normal" ? "datasets" : "datagen/synthetic-${var.benchmark_complexity_word}"
 }
 
 
@@ -202,8 +204,8 @@ resource "azurerm_virtual_machine_extension" "execute_benchmark" {
     {
         "script": "${base64encode(templatefile("prepare.sh", {
   SAS_TOKEN        = data.azurerm_storage_account_sas.example.sas
-  DATA_FOLDER      = var.benchmark_type
-  BENCHMARK_SCRIPT = templatefile("benchmark-${var.benchmark_type}.py", {})
+  BENCHMARK_TYPE   = var.benchmark_type
+  DATA_FOLDER      = local.data_folder
 }))}"
     }
   SETTINGS
