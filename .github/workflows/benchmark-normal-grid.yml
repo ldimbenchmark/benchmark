@@ -29,7 +29,7 @@ jobs:
 
       # Generates an execution plan for Terraform
       - name: Terraform Plan
-        run: terraform plan -var vm_size="Standard_B1" -var benchmark_type="normal" -var benchmark_complexity_word="days" -out tfplan
+        run: terraform plan -var vm_size="Standard_D16as_v5" -var benchmark_type="normal" -var benchmark_normal_word="grid" -out tfplan
 
       - name: Create directory
         run: mkdir /tmp/benchmark-results/
@@ -40,7 +40,7 @@ jobs:
 
       - name: Execute benchmark
         run: |
-          scp -r -i private.key -o StrictHostKeyChecking=no /benchmark-normal-grid.py $(terraform output -raw host):/home/azureuser/benchmark.py
+          scp -r -i private.key -o StrictHostKeyChecking=no ./benchmark-normal-grid.py $(terraform output -raw host):/home/azureuser/benchmark.py
           ssh -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host) sh <<'END_SCRIPT'
           sudo pip list
           sudo python3 /home/azureuser/benchmark.py
@@ -50,7 +50,7 @@ jobs:
       - name: Get data
         if: always()
         run: |
-          scp -r -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host):/home/azureuser/benchmark-results /tmp/benchmark-results/
+          scp -r -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host):/home/azureuser/grid-search/evaluation_results /tmp/benchmark-results/
 
       - uses: actions/upload-artifact@master
         if: always()

@@ -129,7 +129,7 @@ resource "azurerm_linux_virtual_machine" "benchmark_vm" {
     name                 = "myOsDisk"
     caching              = "ReadWrite"
     storage_account_type = "Premium_LRS" # UltraSSD_LRS
-    disk_size_gb         = 128
+    disk_size_gb         = 256
   }
 
   source_image_reference {
@@ -203,9 +203,9 @@ resource "azurerm_virtual_machine_extension" "execute_benchmark" {
   settings = <<SETTINGS
     {
         "script": "${base64encode(templatefile("prepare.sh", {
-  SAS_TOKEN        = data.azurerm_storage_account_sas.example.sas
-  BENCHMARK_TYPE   = var.benchmark_type
-  DATA_FOLDER      = local.data_folder
+  SAS_TOKEN      = data.azurerm_storage_account_sas.example.sas
+  BENCHMARK_TYPE = var.benchmark_type
+  DATA_FOLDER    = local.data_folder
 }))}"
     }
   SETTINGS

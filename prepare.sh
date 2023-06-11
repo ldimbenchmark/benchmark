@@ -11,10 +11,14 @@ tar -xvf /tmp/downloadazcopy-v10-linux -C /tmp
 # Move AzCopy to the destination you want to store it
 cp /tmp/azcopy_linux_amd64_*/azcopy /tmp/azcopy
 
-if [ $BENCHMARK_TYPE = "normal" ]
+if [ ${BENCHMARK_TYPE} = "normal" ]
 then
         echo "Preparing for Normal Benchmark"
-        /tmp/azcopy copy "https://masterthesisdata.dfs.core.windows.net/benchmark-cache/${DATA_FOLDER}${SAS_TOKEN}" /home/azureuser/datasets --recursive
+        /tmp/azcopy copy "https://masterthesisdata.dfs.core.windows.net/benchmark-cache/${DATA_FOLDER}${SAS_TOKEN}" /home/azureuser --recursive
+
+        # Quickfixes
+        mkdir /home/azureuser/datasets/gjovik/levels
+        mkdir /home/azureuser/datasets/graz-ragnitz/demands
 else
         echo "Preparing for Complexity Benchmark"
         mkdir /home/azureuser/.ldim_benchmark_cache
@@ -24,10 +28,8 @@ else
 fi
 
 
-
-
 # Install Python
-sudo apt install -y python3-pip
+sudo apt install -y python3-pip python-is-python3
 pip install ldimbenchmark
 
 # sudo python3 /home/azureuser/benchmark.py

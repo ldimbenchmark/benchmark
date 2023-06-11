@@ -1,16 +1,13 @@
 {
-	"image": "mcr.microsoft.com/devcontainers/universal:2",
-	"features": {
-		"ghcr.io/devcontainers/features/azure-cli:1": {},
-		"ghcr.io/devcontainers/features/terraform:1": {}
-	},
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"hashicorp.terraform",
-				"ms-python.python",
-				"github.vscode-github-actions"
-			]
-		}
-	}
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {
+    "ghcr.io/devcontainers/features/azure-cli:1": {},
+    "ghcr.io/devcontainers/features/terraform:1": {}
+  },
+  "postCreateCommand": "terraform init && pip install ldimbenchmark",
+  "customizations": {
+    "vscode": {
+      "extensions": ["hashicorp.terraform", "ms-python.python", "github.vscode-github-actions"]
+    }
+  }
 }
