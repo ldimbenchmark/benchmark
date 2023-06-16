@@ -17,7 +17,7 @@ if not isinstance(numeric_level, int):
 
 logging.basicConfig(
     level=numeric_level,
-    handlers=[logging.StreamHandler()],
+    handlers=[logging.StreamHandler(), logging.FileHandler("benchmark.log")],
     format="%(asctime)s %(levelname)-8s %(message)s",
 )
 logging.getLogger().setLevel(numeric_level)
@@ -25,25 +25,27 @@ logging.getLogger().setLevel(numeric_level)
 if __name__ == "__main__":
     param_grid = {
         "lila": {
-            "est_length": np.arange(24, 24 * 8, 24).tolist(),
-            "C_threshold": np.arange(2, 16, 1).tolist(),
-            "delta": np.arange(4, 14, 1).tolist(),
+            "est_length": np.arange(24, 24 * 8, 24).tolist(), # Optimal: Battledim: 168, Graz: x, Gjovik: x
+            "C_threshold": np.arange(2, 16, 1).tolist(), # Optimal: Battledim: 15, Graz: x, Gjovik: x
+            "delta": np.arange(4, 14, 1).tolist(), # Optimal: Battledim: 12, Graz: x, Gjovik: x
             "default_flow_sensor": ["sum"],
+            # "resample_frequency": ["60T", "30T"], # Optimal: Battledim: 5T, Graz: x, Gjovik: x
         },
         "mnf": {
             # "gamma": np.arange(-10, 10, 1).tolist(),
-            "gamma": np.arange(-0.3, 1, 0.05).tolist(),
-            "window": [1, 5, 10, 20],
+            "gamma": np.arange(-0.3, 1, 0.05).tolist(), # Optimal: Battledim: 1.0, Graz: x, Gjovik: x
+            "window": [1, 5, 10, 20], # Optimal: Battledim: 10, Graz: x, Gjovik: x
+            # "resample_frequency": ["60T"], # Optimal: Battledim: 5T, Graz: x, Gjovik: x
         },
         "dualmethod": {
-            "est_length": np.arange(24, 24 * 40, 48).tolist(),
-            "C_threshold": np.arange(0, 1, 0.2).tolist() + np.arange(2, 6, 1).tolist(),
-            "delta": np.arange(0, 1, 0.2).tolist() + np.arange(2, 6, 1).tolist(),
+            "est_length": np.arange(24, 24 * 40, 48).tolist(), # Optimal: Battledim: 888, Graz: x, Gjovik: x
+            "C_threshold": np.arange(0, 1, 0.2).tolist() + np.arange(2, 6, 1).tolist(), # Optimal: Battledim: 0.2, Graz: x, Gjovik: x
+            "delta": np.arange(0, 4, 0.2).tolist() + np.arange(2, 6, 1).tolist(), # Optimal: Battledim: 4, Graz: x, Gjovik: x
         },
     }
 
     datasets = [
-        Dataset("./datasets/gjovik"),
+        # Dataset("./datasets/gjovik"),
         Dataset("./datasets/graz-ragnitz"),
         Dataset("./datasets/battledim"),
     ]
@@ -58,7 +60,7 @@ if __name__ == "__main__":
 
     benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/mnf:1.2.0"])
     benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/lila:0.2.0"])
-    # benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/dualmethod:0.1.0"])
+    benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/dualmethod:0.1.0"])
 
     # execute benchmark
     benchmark.run_benchmark(

@@ -7,3 +7,6 @@ tfplan
 .env
 .ldim_benchmark_cache
 benchmark-results
+datasets
+grid-search
+benchmark.log
