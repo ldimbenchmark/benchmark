@@ -45,7 +45,7 @@ if __name__ == "__main__":
     }
 
     datasets = [
-        Dataset("./datasets/gjovik"),
+        # Dataset("./datasets/gjovik"),
         Dataset("./datasets/graz-ragnitz"),
         Dataset("./datasets/battledim"),
     ]
@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/mnf:1.2.0"])
     benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/lila:0.2.0"])
-    # benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/dualmethod:0.1.0"])
+    benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/dualmethod:0.1.0"])
 
     # execute benchmark
     benchmark.run_benchmark(
