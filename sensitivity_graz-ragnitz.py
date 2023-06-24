@@ -15,8 +15,7 @@ import logging
 from matplotlib import pyplot as plt
 import numpy as np
 
-test_data_folder = "test_data"
-test_data_folder_datasets = os.path.join("test_data", "datasets")
+test_data_folder_datasets = os.path.join("datasets")
 
 logLevel = "INFO"
 
