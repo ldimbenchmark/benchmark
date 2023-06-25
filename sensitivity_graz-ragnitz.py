@@ -124,6 +124,9 @@ if __name__ == "__main__":
 
 
     derivator.derive_model("junctions", "elevation", "accuracy", [16, 8, 4, 2, 1, 0.5, 0.1])
+    derivator.derive_model("pipes", "diameter", "accuracy", [16, 8, 4, 2, 1, 0.5, 0.1])
+    derivator.derive_model("pipes", "roughness", "accuracy", [0.0001, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05])
+    derivator.derive_model("pipes", "length", "accuracy", [16, 8, 4, 2, 1, 0.5, 0.1])
 
     allDerivedDatasets = derivator.get_dervived_datasets(True)
     # %%
