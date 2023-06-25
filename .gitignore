@@ -6,7 +6,9 @@ private.key
 tfplan
 .env
 .ldim_benchmark_cache
+*.log
 benchmark-results
+sensitivity-analysis
 datasets
 grid-search
 benchmark.log
