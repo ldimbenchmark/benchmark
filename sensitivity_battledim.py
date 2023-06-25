@@ -195,12 +195,36 @@ if __name__ == "__main__":
 
     # %%
     analyzer = DatasetAnalyzer("sensitivity-analysis")
+    derivator = DatasetDerivator(
+        datasets,
+        os.path.join(test_data_folder_datasets),  # ignore_cache=True
+    )
+
+    derivator.derive_data("pressures", "precision", [0.1])
+
+    derivator.derive_data("pressures", "downsample", [60 * 10])
+
+    derivator.derive_data("pressures", "sensitivity", [
+        {"value": 1, "shift": "middle"},
+    ])
+
+    derivator.derive_data("flows", "precision", [0.1])
+    derivator.derive_data("flows", "downsample", [60 * 10])
+    derivator.derive_data("flows", "sensitivity", [
+        {"value": 1, "shift": "middle"},
+    ])
+
+    allDerivedDatasets = derivator.get_dervived_datasets()
 
     # # Precision
-    # analyzer.compare([datasets[0], allDerivedDatasets[4]], "pressures", True)
+    analyzer.compare([datasets[0], allDerivedDatasets[0]], "pressures", True)
     # # Downsample
-    # analyzer.compare([datasets[0], allDerivedDatasets[10]], "pressures", True)
+    analyzer.compare([datasets[0], allDerivedDatasets[1]], "pressures", True)
     # Sensitivity
-    analyzer.compare([datasets[0], allDerivedDatasets[17]], "pressures", True)
+    analyzer.compare([datasets[0], allDerivedDatasets[2]], "pressures", True)
+
+    analyzer.compare([datasets[0], allDerivedDatasets[3]], "flows", True)
+    analyzer.compare([datasets[0], allDerivedDatasets[4]], "flows", True)
+    analyzer.compare([datasets[0], allDerivedDatasets[5]], "flows", True)
 
     # %%
