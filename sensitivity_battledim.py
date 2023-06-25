@@ -114,10 +114,18 @@ if __name__ == "__main__":
             60 * 60 * 12,
         ],
     )
-
     derivator.derive_data(
         ["flows", "pressures"], "precision", [0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.6]
     )
+    derivator.derive_data(["flows", "pressures"], "sensitivity", [
+        {"value": 0.1, "shift": "bottom"},
+        {"value": 0.5, "shift": "bottom"},
+        {"value": 1, "shift": "bottom"},
+        {"value": 2, "shift": "bottom"},
+        {"value": 3, "shift": "bottom"},
+        {"value": 5, "shift": "bottom"},
+        {"value": 10, "shift": "bottom"},
+    ])
 
 
     derivator.derive_model("junctions", "elevation", "accuracy", [16, 8, 4, 2, 1, 0.5, 0.1])
@@ -167,8 +175,8 @@ if __name__ == "__main__":
 
     benchmark.run_benchmark(
         evaluation_mode="evaluation",
-        # parallel=True,
-        parallel_max_workers=2,
+        parallel=True,
+        parallel_max_workers=3,
         memory_limit="20g"
         # use_cached=False,
     )
@@ -178,6 +186,7 @@ if __name__ == "__main__":
     benchmark.evaluate(
         current_only=True,
         write_results="db",
+        print_results=False
     )
 
     # %%

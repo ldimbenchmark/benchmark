@@ -94,6 +94,7 @@ if __name__ == "__main__":
         {"value": 10, "shift": "bottom"},
     ])
 
+    # Both
     derivator.derive_data(
         ["flows", "pressures"],
         "downsample",
@@ -111,36 +112,47 @@ if __name__ == "__main__":
         ["flows", "pressures"], "precision", [0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.6]
     )
 
+    derivator.derive_data(["flows", "pressures"], "sensitivity", [
+        {"value": 0.1, "shift": "bottom"},
+        {"value": 0.5, "shift": "bottom"},
+        {"value": 1, "shift": "bottom"},
+        {"value": 2, "shift": "bottom"},
+        {"value": 3, "shift": "bottom"},
+        {"value": 5, "shift": "bottom"},
+        {"value": 10, "shift": "bottom"},
+    ])
+
 
     derivator.derive_model("junctions", "elevation", "accuracy", [16, 8, 4, 2, 1, 0.5, 0.1])
-    allDerivedDatasets = allDerivedDatasets + derivedDatasets
 
     allDerivedDatasets = derivator.get_dervived_datasets(True)
     # %%
 
 
+    # Best Performances
     hyperparameters = {
         "lila": {
-            # Best Performances
             "graz-ragnitz": {
-                # Overall
-                # "resample_frequency": "1T",
-                "est_length": 0.19999999999999998,
-                "C_threshold": 5.25,
-                "delta": -1.0,
-            },
+                'leakfree_time_start': '2016-04-12 01:15:00',
+                'leakfree_time_stop': '2016-04-12 01:29:59',
+                'resample_frequency': '10s', 
+                'est_length': 1.1, 
+                'C_threshold': 15,
+                'delta': -1,
+                'dma_specific': False,
+                'default_flow_sensor': 'wNode_1'
+            }
         },
         "mnf": {
             # not applicable
         },
         "dualmethod": {
             "graz-ragnitz": {
-                # Best Performance Overall
-                "resample_frequency": "1T",
-                "est_length": 0.12000000000000001,
-                "C_threshold": 1.8,
-                "delta": -2.0,
-            },
+                'resample_frequency': '1T',
+                'est_length': 1.1,
+                'C_threshold': 0.7,
+                'delta': -0.2
+            }
         },
     }
 
@@ -170,6 +182,7 @@ if __name__ == "__main__":
     benchmark.evaluate(
         True,
         write_results="db",
+        print_results=False
     )
 
     # %%
@@ -177,13 +190,42 @@ if __name__ == "__main__":
 
 
     # %%
+
+    # Analyze Derivations
+
     analyzer = DatasetAnalyzer("sensitivity-analysis")
+    derivator = DatasetDerivator(
+        datasets,
+        os.path.join(test_data_folder_datasets),  # ignore_cache=True
+    )
+
+    derivator.derive_data("pressures", "precision", [0.1])
+
+    derivator.derive_data("pressures", "downsample", [10])
+
+    derivator.derive_data("pressures", "sensitivity", [
+        {"value": 0.5, "shift": "bottom"},
+    ])
+
+    derivator.derive_data("flows", "precision", [0.1])
+    derivator.derive_data("flows", "downsample", [10])
+    derivator.derive_data("flows", "sensitivity", [
+        {"value": 0.5, "shift": "bottom"},
+    ])
+
+    allDerivedDatasets = derivator.get_dervived_datasets()
 
     # # Precision
-    # analyzer.compare([datasets[0], allDerivedDatasets[4]], "pressures", True)
+    analyzer.compare([datasets[0], allDerivedDatasets[0]], "pressures", True)
     # # Downsample
-    # analyzer.compare([datasets[0], allDerivedDatasets[10]], "pressures", True)
+    # analyzer.compare([datasets[0], allDerivedDatasets[1]], "pressures", True)
     # Sensitivity
-    analyzer.compare([datasets[0], allDerivedDatasets[17]], "pressures", True)
+    # analyzer.compare([datasets[0], allDerivedDatasets[2]], "pressures", True)
+
+    analyzer.compare([datasets[0], allDerivedDatasets[3]], "flows", True)
+    # analyzer.compare([datasets[0], allDerivedDatasets[4]], "flows", True)
+    # analyzer.compare([datasets[0], allDerivedDatasets[5]], "flows", True)
+
+
 
     # %%
