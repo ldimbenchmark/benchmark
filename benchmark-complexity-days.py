@@ -17,5 +17,5 @@ benchmark.run_complexity_analysis(
     style="time",
     n_max=366,
     n_measures=60,
-    n_repeats=3
+    n_repeats=5
 )
