@@ -25,6 +25,9 @@ else
         mkdir /home/azureuser/.ldim_benchmark_cache/datagen
 
         /tmp/azcopy copy "https://masterthesisdata.dfs.core.windows.net/benchmark-cache/${DATA_FOLDER}${SAS_TOKEN}" /home/azureuser/.ldim_benchmark_cache/datagen --recursive
+        
+        test -d /home/azureuser/.ldim_benchmark_cache/datagen/synthetic-days && find /home/azureuser/.ldim_benchmark_cache/datagen/synthetic-days/ -mindepth 1 -maxdepth 1 -type d  ! -name '.' -exec sh -c 'mkdir -p "$0/levels"' {} \;
+        test -d /home/azureuser/.ldim_benchmark_cache/datagen/synthetic-junctions && find /home/azureuser/.ldim_benchmark_cache/datagen/synthetic-junctions -mindepth 1 -maxdepth 1 -type d  ! -name '.' -exec sh -c 'mkdir -p "$0/levels"' {} \;
 fi
 
 
