@@ -32,6 +32,7 @@ fi
 
 
 # Install Python
+sudo apt update
 sudo apt install -y python3-pip python-is-python3
 pip install ldimbenchmark
 
