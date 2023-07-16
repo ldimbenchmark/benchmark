@@ -58,9 +58,9 @@ if __name__ == "__main__":
         },
         "dualmethod": {
             "battledim": {
-                "est_length": np.arange(24, 24 * 50, 72).tolist(), # Optimal: Battledim: 888, Graz: x, Gjovik: x
-                "C_threshold": np.arange(-3, -1, 1).tolist() + np.around(np.arange(-1, 2, 0.2),1).tolist() + np.arange(2,7, 1).tolist(), # Optimal: Battledim: 0.2, Graz: x, Gjovik: x
-                "delta": np.arange(-3, 9, 1).tolist(), # np.around(np.arange(0, 4, 0.2)).tolist() +   # Optimal: Battledim: 4, Graz: x, Gjovik: x
+                "est_length": np.arange(24, 24 * 50, 96).tolist(), # Optimal: Battledim: 888, Graz: x, Gjovik: x
+                "C_threshold": np.arange(-3, -1, 1).tolist() + np.around(np.arange(-1, 2, 0.5),1).tolist() + np.arange(2,7, 1).tolist(), # Optimal: Battledim: 0.2, Graz: x, Gjovik: x
+                "delta": np.arange(-3, 9, 2).tolist(), # np.around(np.arange(0, 4, 0.2)).tolist() +   # Optimal: Battledim: 4, Graz: x, Gjovik: x
             },
             "graz-ragnitz": {
                 "resample_frequency": ["1T"], 
@@ -90,21 +90,21 @@ if __name__ == "__main__":
         multi_parameters=True,
     )
 
-    # benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/mnf:1.2.0"])
-    # benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/lila:0.2.0"])
+    benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/mnf:1.2.0"])
+    benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/lila:0.2.0"])
     benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/dualmethod:0.1.0"])
 
     # # execute benchmark
-    # benchmark.run_benchmark(
-    #     "evaluation",
-    #     parallel=True,
-    #     parallel_max_workers=3, 
-    #     memory_limit="20g",
-    # )
+    benchmark.run_benchmark(
+        "training",
+        parallel=True,
+        parallel_max_workers=3, 
+        memory_limit="20g",
+    )
 
     benchmark.evaluate(
         write_results=["db"],
-        current_only=False,
+        current_only=True,
         print_results=False
         # resultFilter=lambda results: results[results["F1"].notna()],
     )
