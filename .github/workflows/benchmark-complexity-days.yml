@@ -40,7 +40,7 @@ jobs:
 
       - name: Execute benchmark
         run: |
-          scp -r -i private.key -o StrictHostKeyChecking=no /benchmark-complexity-days.py $(terraform output -raw host):/home/azureuser/benchmark.py
+          scp -r -i private.key -o StrictHostKeyChecking=no benchmark-complexity-days.py $(terraform output -raw host):/home/azureuser/benchmark.py
           ssh -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host) sh <<'END_SCRIPT'
           sudo pip list
           sudo python3 /home/azureuser/benchmark.py

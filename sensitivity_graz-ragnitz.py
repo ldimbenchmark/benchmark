@@ -124,6 +124,9 @@ if __name__ == "__main__":
 
 
     derivator.derive_model("junctions", "elevation", "accuracy", [16, 8, 4, 2, 1, 0.5, 0.1])
+    derivator.derive_model("pipes", "diameter", "accuracy", [16, 8, 4, 2, 1, 0.5, 0.1])
+    derivator.derive_model("pipes", "roughness", "accuracy", [0.0001, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05])
+    derivator.derive_model("pipes", "length", "accuracy", [16, 8, 4, 2, 1, 0.5, 0.1])
 
     allDerivedDatasets = derivator.get_dervived_datasets(True)
     # %%
@@ -201,16 +204,16 @@ if __name__ == "__main__":
 
     derivator.derive_data("pressures", "precision", [0.1])
 
-    derivator.derive_data("pressures", "downsample", [10])
+    derivator.derive_data("pressures", "downsample", [5])
 
     derivator.derive_data("pressures", "sensitivity", [
-        {"value": 0.5, "shift": "bottom"},
+        {"value": 0.1, "shift": "bottom"},
     ])
 
     derivator.derive_data("flows", "precision", [0.1])
-    derivator.derive_data("flows", "downsample", [10])
+    derivator.derive_data("flows", "downsample", [5])
     derivator.derive_data("flows", "sensitivity", [
-        {"value": 0.5, "shift": "bottom"},
+        {"value": 0.1, "shift": "bottom"},
     ])
 
     allDerivedDatasets = derivator.get_dervived_datasets()
@@ -218,13 +221,13 @@ if __name__ == "__main__":
     # # Precision
     analyzer.compare([datasets[0], allDerivedDatasets[0]], "pressures", True)
     # # Downsample
-    # analyzer.compare([datasets[0], allDerivedDatasets[1]], "pressures", True)
+    analyzer.compare([datasets[0], allDerivedDatasets[1]], "pressures", True)
     # Sensitivity
-    # analyzer.compare([datasets[0], allDerivedDatasets[2]], "pressures", True)
+    analyzer.compare([datasets[0], allDerivedDatasets[2]], "pressures", True)
 
     analyzer.compare([datasets[0], allDerivedDatasets[3]], "flows", True)
-    # analyzer.compare([datasets[0], allDerivedDatasets[4]], "flows", True)
-    # analyzer.compare([datasets[0], allDerivedDatasets[5]], "flows", True)
+    analyzer.compare([datasets[0], allDerivedDatasets[4]], "flows", True)
+    analyzer.compare([datasets[0], allDerivedDatasets[5]], "flows", True)
 
 
 

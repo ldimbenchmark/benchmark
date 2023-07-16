@@ -1,4 +1,4 @@
-name: 'Complexity Benchmark (Days)'
+name: 'Complexity Grid'
 
 on:
   workflow_dispatch:

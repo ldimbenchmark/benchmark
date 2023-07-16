@@ -2,9 +2,9 @@ from ldimbenchmark.methods import LILA, MNF, DUALMethod
 from ldimbenchmark import LDIMBenchmark
 
 methods = [
-    "ghcr.io/ldimbenchmark/dualmethod:0.2.23",
-    "ghcr.io/ldimbenchmark/lila:0.2.23",
-    "ghcr.io/ldimbenchmark/mnf:0.2.23",
+    "ghcr.io/ldimbenchmark/mnf:1.2.0",
+    "ghcr.io/ldimbenchmark/lila:0.2.1",
+    "ghcr.io/ldimbenchmark/dualmethod:0.1.0",
 ]
 
 benchmark = LDIMBenchmark(
@@ -17,5 +17,5 @@ benchmark.run_complexity_analysis(
     style="junctions",
     n_max=366,
     n_measures=60,
-    n_repeats=3
+    n_repeats=5
 )
