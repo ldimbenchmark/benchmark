@@ -46,9 +46,10 @@ if __name__ == "__main__":
         "mnf": {
             "battledim": {
                 # "gamma": np.arange(-10, 10, 1).tolist(),
-                "gamma": np.around(np.arange(-0.2, 1.5, 0.05),2).tolist(), # Optimal: Battledim: 1.0, Graz: x, Gjovik: x
-                "window": np.arange(1, 19, 1).tolist(), # Optimal: Battledim: 10, Graz: x, Gjovik: x
+                "gamma": np.around(np.arange(-0.5, 1.5, 0.05),2).tolist(), # Optimal: Battledim: 1.0, Graz: x, Gjovik: x
+                "window": np.arange(1, 24, 1).tolist(), # Optimal: Battledim: 10, Graz: x, Gjovik: x
                 "resample_frequency": ["10T", "60T"], # Optimal: Battledim: 5T, Graz: x, Gjovik: x
+                "sensor_treatment": ["each", "first", "sum"]
             },
             "graz-ragnitz": {
                 # Not Applicable...
@@ -77,8 +78,8 @@ if __name__ == "__main__":
     }
 
     datasets = [
-        # Dataset("./datasets/gjovik"),
-        # Dataset("./datasets/graz-ragnitz"),
+        Dataset("./datasets/gjovik"),
+        Dataset("./datasets/graz-ragnitz"),
         Dataset("./datasets/battledim"),
     ]
 
@@ -90,7 +91,7 @@ if __name__ == "__main__":
         multi_parameters=True,
     )
 
-    benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/mnf:1.2.0"])
+    benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/mnf:1.3.0"])
     benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/lila:0.2.0"])
     benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/dualmethod:0.1.0"])
 
@@ -103,7 +104,7 @@ if __name__ == "__main__":
     )
 
     benchmark.evaluate(
-        write_results=["db"],
+        write_results=["db", "png"],
         current_only=True,
         print_results=False
         # resultFilter=lambda results: results[results["F1"].notna()],
