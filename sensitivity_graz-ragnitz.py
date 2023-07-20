@@ -29,17 +29,17 @@ logging.basicConfig(
 )
 logging.getLogger().setLevel(numeric_level)
 
+datasets = [
+    Dataset(os.path.join(test_data_folder_datasets, "graz-ragnitz")),
+]
+
+# %%
 if __name__ == "__main__":
 
-    # %%
-
-    datasets = [
-        Dataset(os.path.join(test_data_folder_datasets, "graz-ragnitz")),
-    ]
 
     allDerivedDatasets = datasets
 
-    # %%
+
     derivator = DatasetDerivator(
         datasets,
         os.path.join(test_data_folder_datasets),  # ignore_cache=True
@@ -71,6 +71,16 @@ if __name__ == "__main__":
         {"value": 10, "shift": "bottom"},
     ])
 
+    derivator.derive_data("pressures", "count", [
+        1.6,
+        1.5,
+        1.0,
+        0.5,
+        0.1,
+        0.05,
+        0
+    ])
+
     derivator.derive_data("flows", "precision", [0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.6])
     derivator.derive_data(
         "flows",
@@ -92,6 +102,11 @@ if __name__ == "__main__":
         {"value": 3, "shift": "bottom"},
         {"value": 5, "shift": "bottom"},
         {"value": 10, "shift": "bottom"},
+    ])
+
+    derivator.derive_data("flows", "count", [
+        0.15,
+        0
     ])
 
     # Both
@@ -124,7 +139,8 @@ if __name__ == "__main__":
 
 
     derivator.derive_model("junctions", "elevation", "accuracy", [16, 8, 4, 2, 1, 0.5, 0.1])
-    derivator.derive_model("pipes", "diameter", "accuracy", [16, 8, 4, 2, 1, 0.5, 0.1])
+    # INP File shows diameter in mm but uses m internally
+    derivator.derive_model("pipes", "diameter", "accuracy", [16/1000, 8/1000, 4/1000, 2/1000, 1/1000, 0.5/1000, 0.1/1000])
     derivator.derive_model("pipes", "roughness", "accuracy", [0.0001, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05])
     derivator.derive_model("pipes", "length", "accuracy", [16, 8, 4, 2, 1, 0.5, 0.1])
 
@@ -183,7 +199,7 @@ if __name__ == "__main__":
     )
 
     benchmark.evaluate(
-        True,
+        current_only=True,
         write_results="db",
         print_results=False
     )
