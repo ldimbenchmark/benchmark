@@ -162,9 +162,7 @@ if __name__ == "__main__":
                 'default_flow_sensor': 'wNode_1'
             }
         },
-        "mnf": {
-            # not applicable
-        },
+        "mnf": {'resample_frequency': '1s', 'window': 10, 'gamma': 1.2, 'sensor_treatment': 'each', 'night_flow_interval': '1T', 'night_flow_start': '2023-01-01 01:45:00'},
         "dualmethod": {
             "graz-ragnitz": {
                 'resample_frequency': '1T',
@@ -183,7 +181,7 @@ if __name__ == "__main__":
         results_dir="./sensitivity-analysis",
         # debug=True,
     )
-    benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/mnf:1.2.0"])
+    benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/mnf:1.4.0"])
     benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/lila:0.2.1"])
     benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/dualmethod:0.1.0"])
 
