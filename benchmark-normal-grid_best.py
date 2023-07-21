@@ -26,11 +26,7 @@ if __name__ == "__main__":
     param_grid = {
         "mnf": {
             "synthetic-days-9": {'resample_frequency': '5T', 'window': 5, 'gamma': 0.5},
-            "graz-ragnitz": {
-                # Not Applicable...
-                "gamma": 0, 
-                "window": 1,
-            },
+            "graz-ragnitz": {'resample_frequency': '1s', 'window': 10, 'gamma': 1.2, 'sensor_treatment': 'each', 'night_flow_interval': '1T', 'night_flow_start': '2023-01-01 01:45:00'},
             "gjovik": {'window': 5, 'gamma': 0.15},
             "battledim": {'resample_frequency': '60T', 'window': 10, 'gamma': 1.0}
         },
@@ -76,16 +72,20 @@ if __name__ == "__main__":
         "evaluation",
         parallel=True,
         parallel_max_workers=3, 
-        memory_limit="20g",
+        memory_limit="40g",
     )
 
     table = benchmark.evaluate(
         write_results=["csv"],
-        current_only=True,
+        current_only=False,
         print_results=True
         # resultFilter=lambda results: results[results["F1"].notna()],
     )
 
-    # for run_id in table[table["dataset"] != "gjovik"]["_folder"]:
-    #     print(run_id)
-    #     benchmark.evaluate_run(run_id)
+    for run_id in table[table["dataset"] != "gjovik"]["_folder"]:
+        print(run_id)
+        benchmark.evaluate_run(run_id)
+        
+    benchmark.evaluate_run("mnf_1.2.0_gjovik-b29219f0e52ed3224578c69c66c0ab8d_evaluation_575a6e5d3e3e72a069478607e2d14013")
+    benchmark.evaluate_run("mnf_1.2.0_gjovik-b29219f0e52ed3224578c69c66c0ab8d_evaluation_575a6e5d3e3e72a069478607e2d14013")
+    benchmark.evaluate_run("lila_0.2.0_gjovik-b29219f0e52ed3224578c69c66c0ab8d_evaluation_b3f873e596385f89d0f241d2fa5a45cf")
