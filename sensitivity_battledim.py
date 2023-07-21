@@ -29,13 +29,13 @@ logging.basicConfig(
 )
 logging.getLogger().setLevel(numeric_level)
 
+
+datasets = [
+    Dataset(os.path.join(test_data_folder_datasets, "battledim")),
+]
+
+# %%
 if __name__ == "__main__":
-
-    datasets = [
-        Dataset(os.path.join(test_data_folder_datasets, "battledim")),
-    ]
-
-    # %%
     derivator = DatasetDerivator(
         datasets,
         os.path.join(test_data_folder_datasets),  # ignore_cache=True
@@ -71,6 +71,15 @@ if __name__ == "__main__":
         {"value": 10, "shift": "bottom"},
     ])
 
+    derivator.derive_data("pressures", "count", [
+        3.64,
+        3.6,
+        2.0,
+        1.0,
+        0.1,
+        0
+    ])
+
     # Data - Flows
     derivator.derive_data("flows", "precision", [0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.6])
 
@@ -89,7 +98,7 @@ if __name__ == "__main__":
         ],
     )
 
-    derivator.derive_data("pressures", "sensitivity", [
+    derivator.derive_data("flows", "sensitivity", [
         {"value": 0.1, "shift": "bottom"},
         {"value": 0.5, "shift": "bottom"},
         {"value": 1, "shift": "bottom"},
@@ -97,6 +106,14 @@ if __name__ == "__main__":
         {"value": 3, "shift": "bottom"},
         {"value": 5, "shift": "bottom"},
         {"value": 10, "shift": "bottom"},
+    ])
+
+    derivator.derive_data("flows", "count", [
+        0.33,
+        0.25,
+        0.2,
+        0.1,
+        0
     ])
 
     # Both
@@ -129,6 +146,9 @@ if __name__ == "__main__":
 
 
     derivator.derive_model("junctions", "elevation", "accuracy", [16, 8, 4, 2, 1, 0.5, 0.1])
+    derivator.derive_model("pipes", "diameter", "accuracy", [30/1000, 16/1000, 8/1000, 4/1000, 2/1000, 1/1000, 0.5/1000, 0.1/1000])
+    derivator.derive_model("pipes", "roughness", "accuracy", [20, 16, 8, 4, 2, 1, 0.5, 0.1])
+    derivator.derive_model("pipes", "length", "accuracy", [16, 8, 4, 2, 1, 0.5, 0.1])
 
     allDerivedDatasets = derivator.get_dervived_datasets(True)
 
