@@ -167,10 +167,7 @@ if __name__ == "__main__":
             }
         },
         "mnf": {
-            "battledim": {
-                "window": 5.0,
-                "gamma": -0.10000000000000003,
-            }
+            "battledim": {'resample_frequency': '60T', 'window': 7, 'gamma': -0.1, 'sensor_treatment': 'sum'}
         },
         "dualmethod": {
             "battledim": {
@@ -189,14 +186,14 @@ if __name__ == "__main__":
         results_dir="./sensitivity-analysis",
         # debug=True,
     )
-    benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/mnf:1.2.0"])
+    benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/mnf:1.4.0"])
     benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/lila:0.2.1"])
     benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/dualmethod:0.1.0"])
 
     benchmark.run_benchmark(
         evaluation_mode="evaluation",
         parallel=True,
-        parallel_max_workers=3,
+        parallel_max_workers=5,
         memory_limit="20g"
         # use_cached=False,
     )

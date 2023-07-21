@@ -56,7 +56,8 @@ if __name__ == "__main__":
             30,
             60,
             60 * 2,
-            60 * 5,
+            # dont downsample to less than 5 minutes, because the shortest leak is 3 minutes
+            # 60 * 5,
         ],
     )
 
@@ -91,7 +92,8 @@ if __name__ == "__main__":
             30,
             60,
             60 * 2,
-            60 * 5,
+            # dont downsample to less than 5 minutes, because the shortest leak is 3 minutes
+            # 60 * 5,
         ],
     )
     derivator.derive_data("flows", "sensitivity", [
@@ -119,7 +121,8 @@ if __name__ == "__main__":
             30,
             60,
             60 * 2,
-            60 * 5,
+            # dont downsample to less than 5 minutes, because the shortest leak is 3 minutes
+            # 60 * 5,
         ],
     )
 
@@ -191,7 +194,7 @@ if __name__ == "__main__":
     benchmark.run_benchmark(
         evaluation_mode="evaluation",
         parallel=True,
-        parallel_max_workers=3,
+        parallel_max_workers=10,
         memory_limit="20g"
         # use_cached=False,
     )
