@@ -76,9 +76,9 @@ if __name__ == "__main__":
         1.6,
         1.5,
         1.0,
+        0.8,
         0.5,
         0.1,
-        0.05,
         0
     ])
 
@@ -157,10 +157,10 @@ if __name__ == "__main__":
             "graz-ragnitz": {
                 'leakfree_time_start': '2016-04-12 01:15:00',
                 'leakfree_time_stop': '2016-04-12 01:29:59',
-                'resample_frequency': '10s', 
-                'est_length': 1.1, 
-                'C_threshold': 15,
-                'delta': -1,
+                'resample_frequency': '30s', 
+                'est_length': 1.4, 
+                'C_threshold': 16,
+                'delta': -2.0,
                 'dma_specific': False,
                 'default_flow_sensor': 'wNode_1'
             }

@@ -147,8 +147,8 @@ if __name__ == "__main__":
 
     derivator.derive_model("junctions", "elevation", "accuracy", [16, 8, 4, 2, 1, 0.5, 0.1])
     derivator.derive_model("pipes", "diameter", "accuracy", [30/1000, 16/1000, 8/1000, 4/1000, 2/1000, 1/1000, 0.5/1000, 0.1/1000])
-    derivator.derive_model("pipes", "roughness", "accuracy", [20, 16, 8, 4, 2, 1, 0.5, 0.1])
-    derivator.derive_model("pipes", "length", "accuracy", [16, 8, 4, 2, 1, 0.5, 0.1])
+    derivator.derive_model("pipes", "roughness", "accuracy", [20, 16, 8, 4, 2, 1, 0.5, 0.1, 0.2,0.5, 1])
+    derivator.derive_model("pipes", "length", "accuracy", [100, 50, 16, 8, 4, 2, 1, 0.5, 0.1])
 
     allDerivedDatasets = derivator.get_dervived_datasets(True)
 
@@ -159,11 +159,12 @@ if __name__ == "__main__":
     hyperparameters = {
         "lila": {
             "battledim": {
-                "C_threshold": 14,
-                "est_length": 168,
-                "delta": 4,
-                "dma_specific": False,
-                "default_flow_sensor": "sum",
+                "C_threshold": 12, 
+                "resample_frequency": "5T",
+                "est_length": 120,
+                "delta": 18,
+                "dma_specific": True,
+                "default_flow_sensor": "PUMP_1"
             }
         },
         "mnf": {
