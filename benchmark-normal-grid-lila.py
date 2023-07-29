@@ -91,7 +91,7 @@ try:
 
         datasets = [
             # Dataset("./datasets/gjovik"),
-            Dataset("./datasets/graz-ragnitz"),
+            # Dataset("./datasets/graz-ragnitz"),
             Dataset("./datasets/battledim"),
         ]
 
@@ -103,13 +103,13 @@ try:
             multi_parameters=True,
         )
 
-        benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/mnf:1.4.0"])
+        # benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/mnf:1.4.0"])
         benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/lila:0.2.1"])
-        benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/dualmethod:0.1.1"])
+        # benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/dualmethod:0.1.1"])
 
 
         max_ram = "10g"
-        max_workers = 16
+        max_workers = 28
         # # execute benchmark
         benchmark.run_benchmark(
             "evaluation",
@@ -124,17 +124,17 @@ try:
             print_results=False
         )
 
-        benchmark.run_benchmark(
-            "training",
-            parallel=True,
-            parallel_max_workers=max_workers, 
-            memory_limit=max_ram,
-        )
-        benchmark.evaluate(
-            write_results=["db"],
-            current_only=False,
-            print_results=False
-        )
+        # benchmark.run_benchmark(
+        #     "training",
+        #     parallel=True,
+        #     parallel_max_workers=max_workers, 
+        #     memory_limit=max_ram,
+        # )
+        # benchmark.evaluate(
+        #     write_results=["db"],
+        #     current_only=False,
+        #     print_results=False
+        # )
 
 
 except Exception as e:

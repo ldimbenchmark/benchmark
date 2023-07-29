@@ -1,4 +1,4 @@
-name: 'Complexity Grid'
+name: 'Complexity Grid - LILA'
 
 on:
   workflow_dispatch:
@@ -40,7 +40,7 @@ jobs:
 
       - name: Execute benchmark
         run: |
-          scp -r -i private.key -o StrictHostKeyChecking=no ./benchmark-normal-grid.py $(terraform output -raw host):/home/azureuser/benchmark.py
+          scp -r -i private.key -o StrictHostKeyChecking=no ./benchmark-normal-grid-lila.py $(terraform output -raw host):/home/azureuser/benchmark.py
           ssh -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host) sh <<'END_SCRIPT'
           sudo pip list
           sudo python3 /home/azureuser/benchmark.py
@@ -51,7 +51,8 @@ jobs:
       - name: Get data
         if: always()
         run: |
-          scp -r -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host):/home/azureuser/grid-search/evaluation_results /tmp/benchmark-results/
+          scp -r -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host):/home/azureuser/grid-search.zip ./grid-search.zip
+          scp -r -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host):/home/azureuser/grid-search.zip /tmp/benchmark-results/grid-search.zip
 
       - uses: actions/upload-artifact@master
         if: always()
