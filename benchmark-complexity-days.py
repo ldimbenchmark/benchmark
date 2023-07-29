@@ -14,7 +14,7 @@ benchmark.add_local_methods(methods)
 
 benchmark.run_complexity_analysis(
     methods=methods,
-    style="time",
+    style="periods",
     n_max=366,
     n_measures=60,
     n_repeats=5
