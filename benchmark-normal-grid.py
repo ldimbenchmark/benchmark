@@ -103,9 +103,9 @@ try:
             multi_parameters=True,
         )
 
-        benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/mnf:1.4.0"])
-        benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/lila:0.2.1"])
-        benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/dualmethod:0.1.1"])
+        benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/mnf:1.3.0"])
+        benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/lila:0.2.0"])
+        benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/dualmethod:0.1.0"])
 
 
         max_ram = "10g"
