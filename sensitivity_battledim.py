@@ -110,8 +110,6 @@ if __name__ == "__main__":
 
     derivator.derive_data("flows", "count", [
         0.33,
-        0.25,
-        0.2,
         0.1,
         0
     ])
@@ -147,7 +145,8 @@ if __name__ == "__main__":
 
     derivator.derive_model("junctions", "elevation", "accuracy", [16, 8, 4, 2, 1, 0.5, 0.1])
     derivator.derive_model("pipes", "diameter", "accuracy", [30/1000, 16/1000, 8/1000, 4/1000, 2/1000, 1/1000, 0.5/1000, 0.1/1000])
-    derivator.derive_model("pipes", "roughness", "accuracy", [20, 16, 8, 4, 2, 1, 0.5, 0.1, 0.2,0.5, 1])
+    # Batteldim dataset uses H-W Coefficients
+    derivator.derive_model("pipes", "roughness", "accuracy", [60, 50, 40,20, 16, 8, 4, 2, 1])
     derivator.derive_model("pipes", "length", "accuracy", [100, 50, 16, 8, 4, 2, 1, 0.5, 0.1])
 
     allDerivedDatasets = derivator.get_dervived_datasets(True)
@@ -194,7 +193,7 @@ if __name__ == "__main__":
     benchmark.run_benchmark(
         evaluation_mode="evaluation",
         parallel=True,
-        parallel_max_workers=5,
+        parallel_max_workers=2,
         memory_limit="20g"
         # use_cached=False,
     )
