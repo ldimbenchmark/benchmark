@@ -12,3 +12,5 @@ python benchmark.py > allout.txt 2>&1
 
 terraform destroy
 ```
+
+Use the [cheapeast VM](https://azureprice.net/?_numberOfCores_min=16&_memoryInMB_min=256&_numberOfCores_max=32&sortField=linuxPrice&sortOrder=true), eg `Standard_D16as_v5` or `Standard_E16as_v5`, `Standard_FX24mds` depending on your memory requirements. 

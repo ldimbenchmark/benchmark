@@ -82,7 +82,7 @@ try:
                     "est_length": np.arange(24, 24 * 44, 144).tolist(), # Optimal: Battledim: 888, Graz: x, Gjovik: x
                     "C_threshold": np.arange(-3, 9, 2).tolist(), # Optimal: Battledim: 0.2, Graz: x, Gjovik: x
                     "delta": np.arange(-3, 9, 2).tolist(), # np.around(np.arange(0, 4, 0.2)).tolist() +   # Optimal: Battledim: 4, Graz: x, Gjovik: x
-                    "resample_frequency": ["60T"], 
+                    "resample_frequency": ["60T"],
                 },
             },
         }
@@ -91,7 +91,7 @@ try:
 
         datasets = [
             # Dataset("./datasets/gjovik"),
-            Dataset("./datasets/graz-ragnitz"),
+#            Dataset("./datasets/graz-ragnitz"),
             Dataset("./datasets/battledim"),
         ]
 
@@ -103,26 +103,26 @@ try:
             multi_parameters=True,
         )
 
-        benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/mnf:1.4.0"])
+ #       benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/mnf:1.4.0"])
         benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/lila:0.2.1"])
-        benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/dualmethod:0.1.1"])
+  #      benchmark.add_docker_methods(["ghcr.io/ldimbenchmark/dualmethod:0.1.1"])
 
 
         max_ram = "10g"
-        max_workers = 16
+        max_workers = 24
         # # execute benchmark
-        benchmark.run_benchmark(
-            "evaluation",
-            parallel=True,
-            parallel_max_workers=max_workers, 
-            memory_limit=max_ram,
-        )
+#        benchmark.run_benchmark(
+#            "evaluation",
+#            parallel=True,
+#            parallel_max_workers=max_workers, 
+#            memory_limit=max_ram,
+#        )
 
-        benchmark.evaluate(
-            write_results=["db", "png"],
-            current_only=True,
-            print_results=False
-        )
+#        benchmark.evaluate(
+#            write_results=["db", "png"],
+#            current_only=True,
+#            print_results=False
+#        )
 
         benchmark.run_benchmark(
             "training",
@@ -131,7 +131,7 @@ try:
             memory_limit=max_ram,
         )
         benchmark.evaluate(
-            write_results=["db"],
+            write_results=["db", "png"],
             current_only=False,
             print_results=False
         )

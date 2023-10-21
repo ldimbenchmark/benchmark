@@ -29,7 +29,7 @@ jobs:
 
       # Generates an execution plan for Terraform
       - name: Terraform Plan
-        run: terraform plan -var vm_size="Standard_D16as_v5" -var benchmark_type="normal" -var benchmark_normal_word="grid" -out tfplan
+        run: terraform plan -var vm_size="Standard_D16as_v5" -var benchmark_type="normal" -out tfplan
 
       - name: Create directory
         run: mkdir /tmp/benchmark-results/
@@ -44,6 +44,7 @@ jobs:
           ssh -i private.key -o StrictHostKeyChecking=no $(terraform output -raw host) sh <<'END_SCRIPT'
           sudo pip list
           sudo python3 /home/azureuser/benchmark.py
+          zip -r grid-search.zip grid-search/
           END_SCRIPT
         timeout-minutes: 540
 

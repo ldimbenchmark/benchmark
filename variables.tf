@@ -28,16 +28,6 @@ variable "benchmark_complexity_word" {
   description = "type of benchmark"
 }
 
-variable "benchmark_normal_word" {
-  type = string
-  validation {
-    condition     = contains(["grid", "single", "sensitivity"], var.benchmark_normal_word)
-    error_message = "benchmark_normal_word must be either 'grid' or 'single', 'sensitivity'"
-  }
-  default     = "grid"
-  description = "type of benchmark"
-}
-
 variable "benchmark_type" {
   type = string
   validation {

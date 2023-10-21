@@ -193,8 +193,8 @@ data "azurerm_storage_account_sas" "example" {
   }
 }
 
-resource "azurerm_virtual_machine_extension" "execute_benchmark" {
-  name                 = "execute_benchmark"
+resource "azurerm_virtual_machine_extension" "prepare_benchmark" {
+  name                 = "prepare_benchmark"
   virtual_machine_id   = azurerm_linux_virtual_machine.benchmark_vm.id
   publisher            = "Microsoft.Azure.Extensions"
   type                 = "CustomScript"
